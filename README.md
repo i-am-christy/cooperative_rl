@@ -168,15 +168,15 @@ Evaluated on the 1,500-row hold-out test set. The RL model is treated as a binar
 
 | Metric | Q-Learning RL | Logistic Regression |
 |---|---|---|
-| Accuracy | 0.645 | 0.954 |
-| Precision | 0.422 | 0.870 |
-| Recall | 0.722 | 0.983 |
-| F1 Score | 0.533 | 0.923 |
-| AUC-ROC | 0.653 | 0.990 |
+| Accuracy | 0.740 | 0.954 |
+| Precision | 0.531 | 0.870 |
+| Recall | 0.632 | 0.983 |
+| F1 Score | 0.577 | 0.923 |
+| AUC-ROC | 0.695 | 0.990 |
 
 The Logistic Regression baseline outperforms the RL model on all classification metrics. This is expected — LR was trained directly on the binary default prediction task across all 17 features. The RL model operates on 4 discretized features and wasn't optimized for classification. Its value is in producing actionable interventions, not just a default/no-default label.
 
-The agent's recall of 0.722 means it catches 72% of actual defaulters — useful for a cooperative with no existing early warning system.
+The agent's recall of 0.632 means it catches 63.2% of actual defaulters — useful for a cooperative with no existing early warning system.
 
 ---
 
