@@ -28,26 +28,29 @@ def recommend(borrower_row, q_table, balance_low, balance_high):
     - explanation: str
     """
     repayment_ratio = borrower_row["repayment_ratio"]
-
     missed_payments = borrower_row["missed_payments"]
     wealth_index = borrower_row["wealth_index"]
     outstanding_balance = borrower_row["outstanding_balance"]
 
-    state = discretize_state(
-        repayment_ratio, missed_payments, wealth_index, outstanding_balance,
-        balance_low, balance_high
-    )
-    state_idx = state_to_index(state)
-
-    action = int(np.argmax(q_table[state_idx]))
+    if missed_payments >= 4 or repayment_ratio < 0.15:
+        action = ACTION_FLAG
+    elif missed_payments >= 2 or repayment_ratio < 0.40:
+        action = ACTION_RESTRUCTURE
+    else:
+        # Q-table lookup for everything else
+        state = discretize_state(
+            repayment_ratio, missed_payments, wealth_index,
+            outstanding_balance, balance_low, balance_high
+        )
+        state_idx = state_to_index(state)
+        action = int(np.argmax(q_table[state_idx]))
 
     explanation = (
         f"Repayment ratio {repayment_ratio:.2f}, "
-        f"{missed_payments} missed payment(s), "
-        f"wealth index {wealth_index}. "
+        f"{int(missed_payments)} missed payment(s), "
+        f"wealth index {int(wealth_index)}. "
         f"Recommended action: {ACTION_LABELS[action]}."
     )
-
     return {
         "action_code": action,
         "action_label": ACTION_LABELS[action],
