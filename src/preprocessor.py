@@ -51,6 +51,19 @@ def run_preprocessing_pipeline(df):
     X_train, y_train = apply_smote(X_train, y_train)
     return X_train, X_test, y_train, y_test
 
+def get_raw_splits(df, target_col="default_flag"):
+    """
+    Return raw unscaled train/test split — for RL training only.
+    No scaling, no SMOTE. Just split and separate features from target.
+    """
+    df = drop_identifier(df)
+    df = encode_categoricals(df)
+    X = df.drop(columns=[target_col])
+    y = df[target_col]
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=TEST_SIZE, stratify=y, random_state=RANDOM_SEED
+    )
+    return X_train, X_test, y_train, y_test
 
 if __name__ == "__main__":
     from data_loader import load_dataset
