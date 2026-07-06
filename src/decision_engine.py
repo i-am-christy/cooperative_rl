@@ -27,16 +27,10 @@ def recommend(borrower_row, q_table, balance_low, balance_high):
     - risk_level: str
     - explanation: str
     """
-    # repayment_ratio is scaled 0-1, maps directly — no change needed
     repayment_ratio = borrower_row["repayment_ratio"]
 
-    # missed_payments was scaled from 0-6 range, unscale it
-    missed_payments = round(borrower_row["missed_payments"] * 6)
-
-    # wealth_index was scaled from 1-5 range, unscale it
-    wealth_index = round(borrower_row["wealth_index"] * 4 + 1)
-
-    # outstanding_balance — use raw percentile values, already unscaled
+    missed_payments = borrower_row["missed_payments"]
+    wealth_index = borrower_row["wealth_index"]
     outstanding_balance = borrower_row["outstanding_balance"]
 
     state = discretize_state(
