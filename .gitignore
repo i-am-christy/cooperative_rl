@@ -20,12 +20,10 @@ env/
 *.ipynb
 
 # Data — raw and generated files not tracked in git
-data/raw/
 data/*.png
 data/*.csv
 
 # Model artifacts
-*.npy
 *.pkl
 *.joblib
 

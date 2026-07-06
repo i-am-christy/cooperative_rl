@@ -22,15 +22,25 @@ RISK_COLORS = {
 
 @st.cache_resource
 def load_model():
-    """Train the model once and cache it."""
     df = load_dataset()
     X_train, X_test, y_train, y_test = run_preprocessing_pipeline(df)
     X_train_df = pd.DataFrame(X_train,
         columns=X_train.columns if hasattr(X_train, 'columns') else range(X_train.shape[1]))
     X_test_df = pd.DataFrame(X_test,
         columns=X_test.columns if hasattr(X_test, 'columns') else range(X_test.shape[1]))
-    q_table, rewards = train(X_train_df, y_train)
+
     balance_low, balance_high = build_balance_percentiles(X_train_df)
+
+    # load pre-trained Q-table instead of retraining
+    qtable_path = "data/qtable.npy"
+    if os.path.exists(qtable_path):
+        from rl_agent import load_qtable
+        q_table = load_qtable(qtable_path)
+        rewards = list(np.load("data/rewards.npy"))
+    else:
+        from rl_agent import train
+        q_table, rewards = train(X_train_df, y_train)
+
     results_df = batch_recommend(X_test_df, y_test, q_table, balance_low, balance_high)
     return q_table, balance_low, balance_high, results_df, rewards
 

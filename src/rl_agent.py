@@ -4,6 +4,7 @@ from rl_environment import (
     build_balance_percentiles, N_STATES, N_ACTIONS,
     ACTION_CONTINUE, ACTION_RESTRUCTURE, ACTION_FLAG
 )
+import os
 
 ALPHA = 0.1
 GAMMA = 0.9
@@ -95,6 +96,13 @@ def train(X_train_df, y_train, n_episodes=N_EPISODES):
 
     return q_table, rewards_per_episode
 
+def save_qtable(q_table, path="data/qtable.npy"):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    np.save(path, q_table)
+    print(f"Q-table saved to {path}")
+
+def load_qtable(path="data/qtable.npy"):
+    return np.load(path)
 
 if __name__ == "__main__":
     import pandas as pd
