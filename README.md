@@ -1,10 +1,13 @@
 # cooperative_rl
 
-A Q-learning reinforcement learning system for loan repayment optimization in Nigerian cooperative societies. Built as an undergraduate final year project at Achievers University, Owo.
+A Q-learning reinforcement learning system for loan repayment optimization in Nigerian cooperative societies.
 
 The system learns which intervention to recommend for each borrower — continue their current schedule, restructure the loan, or escalate to an administrator — based on their repayment behavior and financial profile.
 
 ---
+## 🖥️ Streamlit App
+
+**Live demo:** (https://cooperativer-rl.streamlit.app/)
 
 ## Project Structure
 
@@ -179,14 +182,9 @@ Evaluated on the 1,500-row hold-out test set. The RL model is treated as a binar
 
 The Logistic Regression baseline outperforms the RL model on all classification metrics. This is expected — LR was trained directly on the binary default prediction task across all 17 features. The RL model operates on 4 discretized features and wasn't optimized for classification. Its value is in producing actionable interventions, not just a default/no-default label.
 
-<<<<<<< HEAD
-The decision engine uses a **hybrid rule + Q-table approach**. Rule-based overrides handle unambiguous high-risk cases (missed_payments ≥ 4 or repayment_ratio < 0.15 → FLAG; missed_payments ≥ 2 or repayment_ratio < 0.40 → RESTRUCTURE). The Q-table handles the ambiguous middle ground. This prevents the agent from making logically indefensible recommendations on unvisited states where all Q-values are zero.
+The decision engine uses a **hybrid rule + Q-table approach**. Rule-based overrides handle unambiguous high-risk cases (missed_payments ≥ 4 or repayment_ratio < 0.15 → FLAG; missed_payments ≥ 2 or repayment_ratio < 0.40 → RESTRUCTURE). The Q-table handles the ambiguous middle ground, which prevents the agent from making indefensible recommendations on unvisited states where all Q-values are still zero.
 
-The agent's F1 of 0.577 and recall of 0.632 represent a meaningful improvement over a system with no early warning capability at all.
-=======
-The agent's recall of 0.632 means it catches 63.2% of actual defaulters — useful for a cooperative with no existing early warning system.
->>>>>>> 10e17c865c734a44f0d0ae09524073aa7810f98d
-
+The agent's recall of 0.632 means it catches 63.2% of actual defaulters — a meaningful early-warning capability for a cooperative that currently has none.
 ---
 
 ## Dashboard
